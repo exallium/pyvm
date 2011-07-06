@@ -21,30 +21,27 @@ There are 65536 memory locations
 This set is meant to try to be as minimal as possible without being
 overbearing.  Therefore, the decision was made to keep all of the separate
 branch statements, for instance.
-
 Arithmetic
 ==========
 ```
 ADD acc1 acc2 -- Performs acc1 = acc1 + acc2
 SUB acc1 acc2 -- Performs acc1 = acc1 - acc2
 ```
-
 Logic
 ==========
 ```
 AND acc1 acc2 -- Performs acc1 = acc1 & acc2
 OR  acc1 acc2 -- Performs acc1 = acc1 | acc2
 XOR acc1 acc2 -- Performs acc1 = acc1 ^ acc2
-SHL acc1 acc2 -- Performs acc1 = acc1 < acc2
-SHR acc1 acc2 -- Performs acc1 = acc1 > acc2
+SHL acc1 acc2 -- Performs acc1 = acc1 << acc2
+SHR acc1 acc2 -- Performs acc1 = acc1 >> acc2
 ```
-
 Memory and Movement
 ==========
 ```
 MOV  acc1 acc2 -- Copies contents of acc1 to acc2
 LDM  acc1 $mem -- Puts val ($location) into acc1
-LDI  acc1 \#val -- Puts val (\#value) into acc1
+LDI  acc1 #val -- Puts val (#value) into acc1
 STR  acc1 $mem -- Puts acc1 into mem ($location)
 PUSH acc1      -- Pushes acc1 onto stack and decrements stack pointer
 POP  acc1      -- Pops the top of stack into acc1 and increments stack pointer
@@ -67,7 +64,6 @@ BGE  acc1      -- Branch if zero bit set or negative bit clear to location
 Usage: python assembler.py infile outfile
 outputs a vm runable script in the following format:
 memorylocation opcode
-
 Assembler Directives
 ==========
 ```
@@ -79,7 +75,6 @@ LABEL ds val  -- Declares a data segment
 label:        -- Marks a location for later reference
 END           -- EOF, required in every file
 ```
-
 # Opcode
 The opcode is split into sections depending on what type of instruction you are using. This makes it easier to quickly see what is going on.  This opcode is also joined with another 1 to 3 bytes of information.  These would be the operands.  
 For example, add AX BX would compile to something like: 0x00 0x01 0xAB.  
