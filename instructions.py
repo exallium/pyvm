@@ -27,13 +27,13 @@ def load_instr():
             'POP':  {'opcode': 0x0D, 'nops': 1, 'nbytes':2}, 
             'INC':  {'opcode': 0x0E, 'nops': 1, 'nbytes':2},
             'DEC':  {'opcode': 0x0F, 'nops': 1, 'nbytes':2}, 
-            'BRA':  {'opcode': 0x80, 'nops': 1, 'nbytes':2}, 
-            'BNE':  {'opcode': 0x90, 'nops': 1, 'nbytes':2}, 
-            'BEQ':  {'opcode': 0xA0, 'nops': 1, 'nbytes':2},
-            'BLT':  {'opcode': 0xB0, 'nops': 1, 'nbytes':2}, 
-            'BLE':  {'opcode': 0xC0, 'nops': 1, 'nbytes':2}, 
-            'BGT':  {'opcode': 0xD0, 'nops': 1, 'nbytes':2}, 
-            'BGE':  {'opcode': 0xE0, 'nops': 1, 'nbytes':2},
+            'BRA':  {'opcode': 0x80, 'nops': 1, 'nbytes':3}, 
+            'BNE':  {'opcode': 0x90, 'nops': 1, 'nbytes':3}, 
+            'BEQ':  {'opcode': 0xA0, 'nops': 1, 'nbytes':3},
+            'BLT':  {'opcode': 0xB0, 'nops': 1, 'nbytes':3}, 
+            'BLE':  {'opcode': 0xC0, 'nops': 1, 'nbytes':3}, 
+            'BGT':  {'opcode': 0xD0, 'nops': 1, 'nbytes':3}, 
+            'BGE':  {'opcode': 0xE0, 'nops': 1, 'nbytes':3},
             }
 
 def reg_dict():

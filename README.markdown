@@ -51,13 +51,13 @@ DEC  acc1      -- Decremens acc1
 Branching
 ==========
 ```
-BRA  acc1      -- Branch always to location stored in acc1
-BNE  acc1      -- Branch if zero bit clear to location stored in acc1
-BEQ  acc1      -- Branch if zero bit set to location stored in acc1
-BLT  acc1      -- Branch if zero bit clear and negative bit set to location
-BLE  acc1      -- Branch if zero bit set or negative bit set to location
-BGT  acc1      -- Branch if zero bit clear and negative bit clear to location
-BGE  acc1      -- Branch if zero bit set or negative bit clear to location
+BRA  $m      -- Branch always to location stored in $m
+BNE  $m      -- Branch if zero bit clear to location stored in $m
+BEQ  $m      -- Branch if zero bit set to location stored in $m
+BLT  $m      -- Branch if zero bit clear and negative bit set to location
+BLE  $m      -- Branch if zero bit set or negative bit set to location
+BGT  $m      -- Branch if zero bit clear and negative bit clear to location
+BGE  $m      -- Branch if zero bit set or negative bit clear to location
 ```
 
 # The Assembler
@@ -68,13 +68,17 @@ Assembler Directives
 ==========
 ```
 ORG $mem      -- Set the location to $mem
+ORG LABEL     -- Set the location to LABEL
 LABEL EQU val -- Set a constant val to LABEL
 LABEL dw val  -- Declares a 16 bit word
 LABEL db val  -- Declares an 8bit value
 LABEL ds val  -- Declares a data segment
 label:        -- Marks a location for later reference
+;             -- Comment to end of line
 END           -- EOF, required in every file
 ```
+Notes about labels: they are not case sensitive and cannot start with numbers.
+
 # Opcode
 The opcode is split into sections depending on what type of instruction you are using. This makes it easier to quickly see what is going on.  This opcode is also joined with another 1 to 3 bytes of information.  These would be the operands.  
 For example, add AX BX would compile to something like: 0x00 0x01 0xAB.  
