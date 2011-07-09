@@ -90,7 +90,6 @@ def main():
             if ip - prev_ip != instr_dir[string[0]]['nbytes']:
                 print "2pass: e: ip=%s: invalid byte count for %s" % (ip,
                         strr[0])
-                print '%s' % prev_ip
             fout.write('\n')
             
     except KeyError:

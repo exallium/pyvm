@@ -81,7 +81,7 @@ Notes about labels: they are not case sensitive and cannot start with numbers.
 
 # Opcode
 The opcode is split into sections depending on what type of instruction you are using. This makes it easier to quickly see what is going on.  This opcode is also joined with another 1 to 3 bytes of information.  These would be the operands.  
-For example, add AX BX would compile to something like: 0x00 0x01 0xAB.  
+For example, add AX BX would compile to something like: 0x00 0x01 0xA 0xB.  
 Something more complex, like STR AX $C0DC would compile to something along the lines of 0x00 0x01 0xC0 0xDC
 
 ```
