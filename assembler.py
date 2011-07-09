@@ -55,6 +55,18 @@ def main():
                 ip = ip + 1
 
     instr_strings = [string for string in instr_strings if string]
+
+    # Now we can take care of directives
+    ip = 0
+    for string in instr_strings:
+        for (index, item) in enumerate(string):
+            if item == 'ORG' and item[index + 1][0] == '$':
+                ip = int(item[index + 1][1:],16)
+            #elif item == 'EQU':
+            #   
+            #elif item == 'DW':
+            #elif item == 'DB':
+            #elif item == 'DS':
     
     # Second Pass
     fout = open(sys.argv[2], 'w')
@@ -65,6 +77,14 @@ def main():
         for string in instr_strings:
             prev_ip = ip
             if string[0] == 'END': break
+            if string[0] == 'ORG':
+                if len(string) != 2:
+                    print ('2pass: e: ip=%s: irregular number of ops for ORG' 
+                            % ip)
+                if string[1][0] == '$':
+                    ip = int(string[1][1:], 16)
+                    continue
+                    
             fout.write("%s %s " % (ip, instr_dir[string[0]]['opcode']))
             ip = ip + 1
             if len(string) - 1 != instr_dir[string[0]]['nops']:
