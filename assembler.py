@@ -1,20 +1,15 @@
 import sys
-from instructions import load_instr, reg_dict
+from instructions import instruction_set, registers
 
 def main():
     if len(sys.argv) != 3:
         print 'assembler.py: usage: python assembler.py infile outfile'
         return
 
-    instr_dir = load_instr()
-    reg_dir = reg_dict()
+    with open(sys.argv[1], 'r') as fin:
+        instr_strings = fin.read().split('\n')
 
-    fin = open(sys.argv[1], 'r')
-    instr_strings = fin.read()
-    fin.close()
-    instr_strings = instr_strings.split('\n')
-
-    instr_strings = instr_strings[:len(instr_strings) - 1]
+    instr_strings = instr_strings[:-1]
     
     # We capitalize every instruction, and then split each list by ' '
     for (index, string) in enumerate(instr_strings):
@@ -23,7 +18,7 @@ def main():
 
         instr_strings[index] = [instr for instr in instr_strings[index] if instr != ';']
         instr_strings[index] = string.upper().split(' ')
-        instr_strings[index] = [instr for instr in instr_strings[index] if instr != '']
+        instr_strings[index] = [instr for instr in instr_strings[index] if instr]
 
     # We don't check whether or not END exists here.  We find it on
     # the go. As soon as we do, we're done.
@@ -33,13 +28,18 @@ def main():
     # We compile this list and spit them into their corresponding locations.
     # Label declarations are removed, label references are replaced with their
     # corresponding location
-    labels = {}
+    labels = dict()
     for string in instr_strings:
+        if string[0] == 'ORG' and string[1][0] == '$':
+            ip = int(string[1][1:],16) - 3
+        elif string[0] == 'ORG' and string[1] in labels.keys():
+            ip = labels[string[1]]
+
         for (index, item) in enumerate(string):
             if item[len(item) - 1] == ':':  # We have a label
                 item = item.rstrip(':')
-                if (item[0].isdigit() or instr_dir.get(item, None)
-                        or reg_dir.get(item, None)):
+                if (item[0].isdigit() or instruction_set.get(item, None)
+                        or registers.get(item, None)):
                     print '1pass: e: ip=%s: %s is invalid label' % (ip, item)
                     return
                 if labels.get(item, None):
@@ -85,15 +85,15 @@ def main():
                     ip = int(string[1][1:], 16)
                     continue
                     
-            fout.write("%s %s " % (ip, instr_dir[string[0]]['opcode']))
+            fout.write("%s %s " % (ip, instruction_set[string[0]]['opcode']))
             ip = ip + 1
-            if len(string) - 1 != instr_dir[string[0]]['nops']:
+            if len(string) - 1 != instruction_set[string[0]]['nops']:
                 print ('2pass: e: ip=%s: irregular number of ops for %s'
                     % (ip, string))
                 return
             for strr in string[1:]:
                 try:
-                    fout.write("%s " % reg_dir[strr])
+                    fout.write("%s " % registers[strr])
                     ip = ip + 1
                 except KeyError:
                     if strr[0] == '#':
@@ -105,9 +105,9 @@ def main():
                         fout.write('%s %s' % (item >> 8, item & 0xFF))
                     else:
                         print ('2pass: e: ip=%s: invalid operand prefix: %s'
-                                % (ip, strr[0]))
+                                % (ip, strr))
                         return
-            if ip - prev_ip != instr_dir[string[0]]['nbytes']:
+            if ip - prev_ip != instruction_set[string[0]]['nbytes']:
                 print "2pass: e: ip=%s: invalid byte count for %s" % (ip,
                         strr[0])
             fout.write('\n')
